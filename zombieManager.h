@@ -2,7 +2,7 @@
 #include "gameNode.h"
 #include "zombie.h"
 #include "zombie1.h"
-
+#include "stage1Scene.h"
 
 
 /*
@@ -23,7 +23,7 @@ private:
 	viZombie _viZomibe;													//좀비들을 담을 벡터 이터레이터 이름
 
 	zombie* _zombie;													//좀비 생성시 필요한 좀비 부모클래스 이름
-
+	stage1Scene* _sc;
 public:
 	HRESULT init();														//초기화
 	void release();														//메모리 삭제
@@ -32,7 +32,9 @@ public:
 
 	void makeZombie(float x, float y, int type);						//좀비를 만드는 함수
 	void removeZombie(int num);											//좀비를 지우는 함수
+	
 
+	void stageSceneLink(stage1Scene* sc) { _sc = sc; }
 
 
 	//////////geta seta/////////////////////////

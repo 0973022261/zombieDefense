@@ -13,10 +13,10 @@ zombieManager::~zombieManager()
 
 HRESULT zombieManager::init()
 {
-	IMAGEMANAGER->addImage("background","background.bmp", WINSIZEX,WINSIZEY,true,RGB(255,0,255));
-	IMAGEMANAGER->addFrameImage("zombie1_ATTACK", "zombie1_ATTACK.bmp", 18 * 50, 50 * 1, 18, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("zombie1_IDLE", "zombie1_IDLE.bmp", 50 * 11, 50 * 1, 11, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("zombie1_MOVE", "zombie1_MOVE.bmp", 50 * 14, 50 * 1, 14, 1, true, RGB(255, 0, 255));
+//	IMAGEMANAGER->addImage("background","background.bmp", WINSIZEX,WINSIZEY,true,RGB(255,0,255));
+	IMAGEMANAGER->addFrameImage("zombie1_ATTACK", "zombie1_ATTACK.bmp", 100 * 18 , 100 * 1, 18, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie1_IDLE", "zombie1_IDLE.bmp", 100 * 11, 100 * 1, 11, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie1_MOVE", "zombie1_MOVE.bmp", 100 * 14, 100 * 1, 14, 1, true, RGB(255, 0, 255));
 
 	return S_OK;
 }
@@ -33,16 +33,16 @@ void zombieManager::update()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
-		makeZombie(WINSIZEX, RND->getFromIntTo(50, WINSIZEY - 50), 0);
+		makeZombie(WINSIZEX*3, RND->getFromIntTo(50,WINSIZEY- 50), 0);
 	}
 }
 
 void zombieManager::render()
 {
-	IMAGEMANAGER->findImage("background")->render(getMemDC());
+//	IMAGEMANAGER->findImage("background")->render(getMemDC());
 	for (int i = 0; i < _vZombie.size(); i++)
 	{
-		_vZombie[i]->render();
+		_vZombie[i]->render(_sc->getPtMap());
 	}
 }
 

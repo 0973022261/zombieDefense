@@ -14,13 +14,13 @@ stage1Scene::~stage1Scene()
 
 HRESULT stage1Scene::init()
 {
-	IMAGEMANAGER->addImage("stage1BG", "bmp\\BGimage\\stage1.bmp", (WINSIZEX * 2)*1.5, WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("stage1BG", "bmp\\BGimage\\stage1.bmp", WINSIZEX*3, WINSIZEY, true, RGB(255, 0, 255));
 	_mapBG = IMAGEMANAGER->findImage("stage1BG");
 
 	_ptMap.x = 0;
 	_ptMap.y = 0;
 
-	_rcMap = RectMakeCenter(_ptMap.x / 2, _ptMap.y + WINSIZEY/2, 50, 50);
+	_rcMap = RectMakeCenter(_ptMap.x/2, _ptMap.y/2, 50, 50);
 	_rcMouse = RectMakeCenter(_ptMouse.x, _ptMouse.y, 50, 50);
 
 	_isStart = false;
@@ -38,7 +38,7 @@ void stage1Scene::update()
 {
 	if (!(_isStart))
 	{
-		if (_ptMap.x + 50 < WINSIZEX * 2)	_ptMap.x += 10;
+		if (_ptMap.x + 50 < WINSIZEX * 3 - (WINSIZEX))	_ptMap.x += 10;
 		else _isStart = true;
 	}
 	else if (_ptMouse.x < 50)
@@ -50,7 +50,7 @@ void stage1Scene::update()
 		if (_ptMap.x < (WINSIZEX * 2) - 600) _ptMap.x += 10;
 	}
 
-	_rcMap = RectMakeCenter(_ptMap.x / 2, _ptMap.y + WINSIZEY / 2, 50, 50);
+	_rcMap = RectMakeCenter(_ptMap.x/2, _ptMap.y/2 , 50, 50);
 	_rcMouse = RectMakeCenter(_ptMouse.x, _ptMouse.y, 50, 50);
 
 }

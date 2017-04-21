@@ -54,7 +54,7 @@ public:
 	virtual HRESULT init(const char* imageName, float x, float y,float speed,int attackDamage, int hp);
 	virtual void release();
 	virtual void update();
-	virtual void render();
+	virtual void render(POINT pt);
 
 	virtual void attack();
 	virtual void move();										//좀비 이동관련 함수

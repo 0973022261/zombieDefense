@@ -77,15 +77,17 @@ void zombie::update()
 
 }
 
-void zombie::render()
+void zombie::render(POINT pt)
 {
-	_zombie._zombieImage->frameRender(getMemDC(), _zombie._x, _zombie._y,_zombie._currentFrameX,_zombie._currentFrameY);
-	//defaultDraw(WINSIZEX/2,WINSIZEY/2);
+	//_zombie._zombieImage->frameRender(getMemDC(), _zombie._x, _zombie._y,_zombie._currentFrameX,_zombie._currentFrameY);
+	defaultDraw(pt.x,pt.y);
 }
 
 void zombie::move()
 {
 	_zombie._x -= _zombie._speed;
+
+	_zombie._rc = RectMakeCenter(_zombie._x, _zombie._y, _zombie._zombieImage->getFrameWidth(), _zombie._zombieImage->getFrameHeight());
 
 	if (_zombie._x < WINSIZEX / 4)
 	{
@@ -101,21 +103,22 @@ void zombie::defaultDraw(float _x, float _y)
 {
 	RECT rcSour;
 	RECT rcTemp;
-	RECT rcFocus = RectMakeCenter(_x, _y, WINSIZEX, WINSIZEY);
+	RECT rcFocus = RectMake(_x, _y, WINSIZEX, WINSIZEY);
 
 	int x, y;
 
+	/*
 	rcSour.left = rcFocus.left - ((WINSIZEX / 2) - (rcFocus.right - rcFocus.left) / 2);
 	rcSour.top = rcFocus.top - ((WINSIZEY / 2) - (rcFocus.bottom - rcFocus.top) / 2);
 	rcSour.right = rcSour.left + WINSIZEX;
 	rcSour.bottom = rcSour.top + WINSIZEY;
+	*/
+	if (!IntersectRect(&rcTemp, &_zombie._rc, &rcFocus)) return;
 
-	if (!IntersectRect(&rcTemp, &_zombie._rc, &rcSour)) return;
+	x = _zombie._rc.left - rcFocus.left;
+	y = _zombie._rc.top - rcFocus.top;
 
-	x = _zombie._rc.left - rcSour.left;
-	y = _zombie._rc.top - rcSour.top;
-
-	_zombie._zombieImage->frameRender(getMemDC(), x, y);
+	_zombie._zombieImage->frameRender(getMemDC(), x, y,_zombie._currentFrameX,_zombie._currentFrameY);
 
 }
 

@@ -14,6 +14,15 @@ mainScene::~mainScene()
 
 HRESULT mainScene::init()
 {
+	IMAGEMANAGER->addImage("mainBG", "bmp\\BGimage\\인트로.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("cloudBG", "bmp\\BGimage\\구름.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("blackBG", "bmp\\BGimage\\검은화면.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("startBt", "bmp\\etc\\startBt.bmp", 358, 461, 1, 3, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("optionBt", "bmp\\etc\\optionBt.bmp", 98, 64, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("helpBt", "bmp\\etc\\helpBt.bmp", 55, 50, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("quitBt", "bmp\\etc\\quitBt.bmp", 55, 60, 1, 2, true, RGB(255, 0, 255));
+
 
 	IMAGEMANAGER->findImage("startBt")->setFrameY(0);
 	IMAGEMANAGER->findImage("startBt")->setX(WINSIZEX / 2 + 50);

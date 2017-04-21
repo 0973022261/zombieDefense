@@ -14,6 +14,7 @@ stage1Scene::~stage1Scene()
 
 HRESULT stage1Scene::init()
 {
+	IMAGEMANAGER->addImage("stage1BG", "bmp\\BGimage\\stage1.bmp", (WINSIZEX * 2)*1.5, WINSIZEY, true, RGB(255, 0, 255));
 	_mapBG = IMAGEMANAGER->findImage("stage1BG");
 
 	_ptMap.x = 0;

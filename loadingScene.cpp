@@ -14,6 +14,9 @@ loadingScene::~loadingScene()
 
 HRESULT loadingScene::init()
 {
+	IMAGEMANAGER->addImage("loadingBG", "bmp\\BGimage\\·Îµù.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("loading", "bmp\\etc\\loading.bmp", 211, 68, 1, 4, true, RGB(255, 0, 255));
+
 	IMAGEMANAGER->findImage("loading")->setX(120);
 	IMAGEMANAGER->findImage("loading")->setY(WINSIZEY - 60);
 

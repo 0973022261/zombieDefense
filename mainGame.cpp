@@ -25,6 +25,10 @@ HRESULT mainGame::init(void)
 
 	stage1Scene* _sc = reinterpret_cast<stage1Scene*>(SCENEMANAGER->addScene("stage1", new stage1Scene));
 
+	_pm = new PlayerManager;
+	_pm->init();
+	_pm->stageSceneLink(_sc);
+
 	_zm = new zombieManager;
 	_zm->init();
 	_zm->stageSceneLink(_sc);
@@ -38,19 +42,24 @@ HRESULT mainGame::init(void)
 void mainGame::release(void)
 {
 	gameNode::release();
+	_pm->release(); 
 	_zm->release();
+
+
 }
 
 //연산 하는 곳
 void mainGame::update(void)
 {
 	gameNode::update();
-	
+	SCENEMANAGER->update();
+	_pm->update();
+
 	_zm->update();
 
 	TIMEMANAGER->getElapsedTime();
 	
-	SCENEMANAGER->update();
+
 }
 
 //그려주는 곳
@@ -62,7 +71,8 @@ void mainGame::render()
 	SCENEMANAGER->render();
 	TIMEMANAGER->render(getMemDC());
 
-	
+	_pm->render();
+
 	_zm->render();
 
 	//백버퍼에 옮겨 그려줄 애 건들지마라 얘는

@@ -2,6 +2,8 @@
 #include "gameNode.h"
 #include "zombie.h"
 #include "zombie1.h"
+#include "zombie2.h"
+#include "zombie3.h"
 #include "stage1Scene.h"
 
 

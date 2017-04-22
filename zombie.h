@@ -13,10 +13,12 @@ enum ZOMBIESTATE
 	ZOMBIE_IDLE,
 	ZOMBIE_MOVE,
 	ZOMBIE_ATTACK,
+	ZOMBIE_HIT,
 	ZOMBIE_DIE
 };
 struct ZOMBIE
 {
+	int _type;									//좀비 타입
 	ZOMBIESTATE _zombieState;					//좀비 상태
 	image* _zombieImage;						//좀비 이미지
 	RECT _rc;									//좀비 RECT
@@ -27,10 +29,12 @@ struct ZOMBIE
 	int _frameCount;							//좀비 이미지프레임 카운트
 	int _currentFrameX;							//좀비 현재 프레임 X
 	int _currentFrameY;							//좀비 현재 프레임 Y
+	bool _isHit;								//좀비 collision  여부확인
 
 	//구조체 생성시 일단 초기화 시켜주자
 	ZOMBIE()
 	{
+		_type = 0;
 		_zombieState = ZOMBIESTATE::ZOMBIE_MOVE;
 		_zombieImage = NULL;
 		_rc = RectMakeCenter(0, 0, 0, 0);
@@ -41,6 +45,7 @@ struct ZOMBIE
 		_frameCount = 0;
 		_currentFrameX = 0;
 		_currentFrameY = 0;
+		_isHit = false;
 	}
 };
 class zombie : public gameNode
@@ -51,7 +56,7 @@ protected:
 	float attackTime;
 	bool isattack;
 public:
-	virtual HRESULT init(const char* imageName, float x, float y,float speed,int attackDamage, int hp);
+	virtual HRESULT init(int type, const char* imageName, float x, float y,float speed,int attackDamage, int hp);
 	virtual void release();
 	virtual void update();
 	virtual void render(POINT pt);

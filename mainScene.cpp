@@ -63,13 +63,13 @@ void mainScene::update()
 	_cloudX++;
 
 	// 페이드 인 효과
-	if (_alpha > 0)	_alpha--;
+	if (_alpha > 0)	_alpha -= 2;
 
 	// 버튼에 마우스 입력 처리
 	mouse_up();
 
 	// 페이드 아웃 효과
-	if (_isStart)	_alpha += 3;
+	if (_isStart)	_alpha += 5;
 	if (_alpha > 250)
 	{
 		_isStart = false;

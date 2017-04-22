@@ -41,10 +41,10 @@ void loadingScene::release()
 void loadingScene::update()
 {
 	_count++;
-	if (_count % 10 == 0)
+	if (_count % 3 == 0)
 	{
 		IMAGEMANAGER->findImage("loading")->setFrameY(++_currentFrameY);
-		_currentGauge += 5;
+		_currentGauge += 1;
 		if (_currentFrameY > IMAGEMANAGER->findImage("loading")->getMaxFrameY())
 		{
 			_count = _currentFrameY = 0;

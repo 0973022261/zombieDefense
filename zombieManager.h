@@ -34,7 +34,7 @@ public:
 
 	void makeZombie(float x, float y, int type);						//좀비를 만드는 함수
 	void removeZombie(int num);											//좀비를 지우는 함수
-	
+	void ZORDER();														//좀비들을 알맞게 그려주는 함수
 
 	void stageSceneLink(stage1Scene* sc) { _sc = sc; }
 

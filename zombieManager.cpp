@@ -45,13 +45,12 @@ void zombieManager::release()
 
 void zombieManager::update()
 {
+	ZORDER();
+
 	for (int i = 0; i < _vZombie.size(); i++)
 	{
 		_vZombie[i]->update();
 	}
-
-
-
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
@@ -134,4 +133,24 @@ void zombieManager::removeZombie(int num)
 {
 	SAFE_DELETE(_vZombie[num]);
 	_vZombie.erase(_vZombie.begin() + num);
+}
+
+void zombieManager::ZORDER()
+{
+
+	for (int i = 0; i < _vZombie.size(); ++i)					// i번째 좀비가
+	{
+		for (int k = i; k < _vZombie.size(); ++k)				// k번째 좀비보다
+		{
+			// 아래에있으면 
+			if (_vZombie[i]->getZombie()._y + _vZombie[i]->getZombie()._zombieImage->getFrameHeight() / 2
+		> _vZombie[k]->getZombie()._y + _vZombie[k]->getZombie()._zombieImage->getFrameHeight() / 2)
+			{
+				zombie* temp;					// 둘의 인덱스를 스왑해준다 (ex : { 5 2 3 4 1 } -> { 1 2 3 4 5 }
+				temp = _vZombie[i];
+				_vZombie[i] = _vZombie[k];
+				_vZombie[k] = temp;
+			}
+		}
+	}
 }

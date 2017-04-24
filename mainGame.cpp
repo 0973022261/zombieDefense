@@ -19,10 +19,8 @@ HRESULT mainGame::init(void)
 {
 	gameNode::init(true);
 
-	SCENEMANAGER->addLoadingScene("로딩", new loadingScene);
-	SCENEMANAGER->addScene("메인화면", new mainScene);
-
-
+	loadingScene* _lc = reinterpret_cast<loadingScene*>(SCENEMANAGER->addLoadingScene("로딩", new loadingScene));
+	mainScene* _mc = reinterpret_cast<mainScene*>(SCENEMANAGER->addScene("메인화면", new mainScene));
 	stage1Scene* _sc = reinterpret_cast<stage1Scene*>(SCENEMANAGER->addScene("stage1", new stage1Scene));
 
 	_pm = new PlayerManager;
@@ -33,7 +31,18 @@ HRESULT mainGame::init(void)
 	_zm->init();
 	_zm->stageSceneLink(_sc);
 
-	SCENEMANAGER->changeScene("로딩");
+	_um = new UiManager;
+	_um->init();
+	_um->mainSceneLink(_mc);
+	_um->stageSceneLink(_sc);
+	_um->loadingSceneLink(_lc);
+
+	_mc->UiManager(_um);
+	_sc->UiManager(_um);
+	_lc->UiManager(_um);
+
+	_mc->UiLink(_um->getMu());
+	SCENEMANAGER->changeScene("메인화면");
 
 	return S_OK;
 }
@@ -44,8 +53,7 @@ void mainGame::release(void)
 	gameNode::release();
 	_pm->release(); 
 	_zm->release();
-
-
+	_um->release();
 }
 
 //연산 하는 곳
@@ -53,13 +61,14 @@ void mainGame::update(void)
 {
 	gameNode::update();
 	SCENEMANAGER->update();
+
 	_pm->update();
-
 	_zm->update();
-
+	_um->update();
 	TIMEMANAGER->getElapsedTime();
-	
 
+
+	
 }
 
 //그려주는 곳
@@ -72,10 +81,9 @@ void mainGame::render()
 	TIMEMANAGER->render(getMemDC());
 
 	_pm->render();
-
 	_zm->render();
+	_um->render();
 
 	//백버퍼에 옮겨 그려줄 애 건들지마라 얘는
 	this->getBackBuffer()->render(getHDC(), 0, 0);
-
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "mainScene.h"
-
+#include "Ui.h"
+#include "UiManager.h"
 
 mainScene::mainScene()
 {
@@ -49,6 +50,9 @@ HRESULT mainScene::init()
 	_alpha = 240;
 
 	_isStart = false;
+	
+	///////////////////////////
+	_um->setScene(0);
 
 	return S_OK;
 }
@@ -107,6 +111,7 @@ void mainScene::mouse_up()
 		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 		{
 			_isStart = true;
+			_ui->setSceneCheck(1);
 		}
 	}
 	else
@@ -120,6 +125,11 @@ void mainScene::mouse_up()
 		&& _ptMouse.y > _optionBtRc.top && _ptMouse.y < _optionBtRc.bottom)
 	{
 		IMAGEMANAGER->findImage("optionBt")->setFrameY(1);
+
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+		{
+			_ui->setMenuCheck(1);
+		}
 	}
 	else
 	{

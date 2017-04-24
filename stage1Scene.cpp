@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "stage1Scene.h"
-
+#include "Ui.h"
+#include "UiManager.h"
 
 stage1Scene::stage1Scene()
 {
@@ -23,8 +24,8 @@ HRESULT stage1Scene::init()
 	_rcMap = RectMakeCenter(_ptMap.x/2, _ptMap.y/2, 50, 50);
 	_rcMouse = RectMakeCenter(_ptMouse.x, _ptMouse.y, 50, 50);
 
-	_isStart = false;
-
+	_startCheck = _isStart = false;
+	_um->setScene(1);
 
 	return S_OK;
 }
@@ -38,7 +39,12 @@ void stage1Scene::update()
 {
 	if (!(_isStart))
 	{
-		if (_ptMap.x + 50 < WINSIZEX * 3 - (WINSIZEX))	_ptMap.x += 10;
+		if (_ptMap.x + 50 < WINSIZEX * 3 - (WINSIZEX))
+		{
+			_ptMap.x += 10;
+			_startCheck = true;
+		}
+
 		else _isStart = true;
 	}
 	else if (_ptMouse.x < 50)

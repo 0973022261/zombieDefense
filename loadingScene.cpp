@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "loadingScene.h"
-
+#include "Ui.h"
+#include "UiManager.h"
 
 loadingScene::loadingScene()
 {
@@ -28,6 +29,9 @@ HRESULT loadingScene::init()
 	_loadingGauge = new progressBar;
 	_loadingGauge->init(IMAGEMANAGER->findImage("loading")->getX() - 20, IMAGEMANAGER->findImage("loading")->getY() - 40, WINSIZEX / 2, 40);
 	_loadingGauge->setGauge(_currentGauge, _maxGauge);
+
+
+	
 
 
 	return S_OK;
@@ -58,6 +62,7 @@ void loadingScene::update()
 	if (_currentGauge > _maxGauge)
 	{
 		SCENEMANAGER->changeScene("메인화면");
+		
 	}
 
 }

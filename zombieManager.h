@@ -4,8 +4,9 @@
 #include "zombie1.h"
 #include "zombie2.h"
 #include "zombie3.h"
+#include "zombie4.h"
+#include "zombie5.h"
 #include "stage1Scene.h"
-
 
 /*
 	2017-04-20 (목요일) 좀비매니저 작업 시작.

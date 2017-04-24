@@ -16,7 +16,7 @@ HRESULT zombieManager::init()
 	//좀비 1
 	IMAGEMANAGER->addFrameImage("zombie1_ATTACK", "zombie1_ATTACK.bmp", 100 * 18 , 100 * 1, 18, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("zombie1_IDLE", "zombie1_IDLE.bmp", 100 * 11, 100 * 1, 11, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("zombie1_MOVE", "zombie1_MOVE.bmp", 100 * 14, 100 * 1, 14, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie1_MOVE", "zombie1_MOVE.bmp", 150 * 14, 150 * 1, 14, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("zombie1_ATTACK_HIT", "zombie1_ATTACK_HIT.bmp", 100 * 18, 100 * 1, 18, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("zombie1_MOVE_HIT", "zombie1_MOVE_HIT.bmp", 100 * 14, 100 * 1, 14, 1, true, RGB(255, 0, 255));
 
@@ -35,6 +35,19 @@ HRESULT zombieManager::init()
 	IMAGEMANAGER->addFrameImage("zombie3_MOVE_HIT", "zombie3_MOVE_HIT.bmp", 100 * 13, 100 * 1, 13, 1, true, RGB(255, 0, 255));
 
 	//좀비 4
+	IMAGEMANAGER->addFrameImage("zombie4_ATTACK", "zombie4_ATTACK.bmp", 100 * 18, 100 * 1, 18, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie4_IDLE", "zombie4_IDLE.bmp", 100 * 6, 100 * 1, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie4_MOVE", "zombie4_MOVE.bmp", 100 * 12, 100 * 1, 12, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie4_ATTACK_HIT", "zombie4_ATTACK_HIT.bmp", 100 * 18, 100 * 1, 18, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie4_MOVE_HIT", "zombie4_MOVE_HIT.bmp", 100 * 12, 100 * 1, 12, 1, true, RGB(255, 0, 255));
+	
+
+	//좀비 5
+	IMAGEMANAGER->addFrameImage("zombie5_ATTACK", "zombie5_ATTACK.bmp", 100 * 46, 100 * 1, 46, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie5_IDLE", "zombie5_IDLE.bmp", 100 * 12, 100 * 1, 12, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie5_MOVE", "zombie5_MOVE.bmp", 150 * 24, 150 * 1, 24, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie5_ATTACK_HIT", "zombie5_ATTACK_HIT.bmp", 100 * 46, 100 * 1, 46, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("zombie5_MOVE_HIT", "zombie5_MOVE_HIT.bmp", 100 * 24, 100 * 1, 24, 1, true, RGB(255, 0, 255));
 
 	return S_OK;
 }
@@ -58,29 +71,29 @@ void zombieManager::update()
 		{
 			case 0:
 			{
-				makeZombie(WINSIZEX * 3, 180, RND->getInt(3));
+				makeZombie(WINSIZEX * 3, 180, RND->getInt(5));
 			}
 			break;
 			case 1:
 			{
-				makeZombie(WINSIZEX * 3, 280, RND->getInt(3));
+				makeZombie(WINSIZEX * 3, 280, RND->getInt(5));
 			}
 			break;
 
 			case 2:
 			{
-				makeZombie(WINSIZEX * 3, 400, RND->getInt(3));
+				makeZombie(WINSIZEX * 3, 400, RND->getInt(5));
 			}
 			break;
 
 			case 3:
 			{
-				makeZombie(WINSIZEX * 3, 500, RND->getInt(3));
+				makeZombie(WINSIZEX * 3, 500, RND->getInt(5));
 			}
 			break;
 			case 4:
 			{
-				makeZombie(WINSIZEX * 3, 600, RND->getInt(3));
+				makeZombie(WINSIZEX * 3, 600, RND->getInt(5));
 			}
 			break;
 
@@ -106,7 +119,7 @@ void zombieManager::makeZombie(float x, float y, int type)
 		case 0:
 		{
 			_zombie = new zombie1;
-			_zombie->init(type,"zombie1_MOVE",x,y,2.0f,10.0f,100);
+			_zombie->init(type, "zombie1_MOVE", x, y, 2.0f, 10.0f, 100);
 			_vZombie.push_back(_zombie);
 		}
 		break;
@@ -123,6 +136,22 @@ void zombieManager::makeZombie(float x, float y, int type)
 		{
 			_zombie = new zombie3;
 			_zombie->init(type, "zombie3_MOVE", x, y, 2.0f, 10.0f, 100);
+			_vZombie.push_back(_zombie);
+		}
+		break;
+
+		case 3:
+		{
+			_zombie = new zombie4;
+			_zombie->init(type, "zombie4_MOVE", x, y, 2.0f, 10.0f, 100);
+			_vZombie.push_back(_zombie);
+		}
+		break;
+
+		case 4:
+		{
+			_zombie = new zombie5;
+			_zombie->init(type, "zombie5_MOVE", x, y, 2.0f, 10.0f, 100);
 			_vZombie.push_back(_zombie);
 		}
 		break;

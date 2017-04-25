@@ -125,6 +125,7 @@ void tama::fire()
 			if (_currentFrameX == 3)
 			{
 				_bm->BulletFire(_rc.right + 40, _rc.top, 12.0f, 1);
+				SOUNDMANAGER->play("±ÇÃÑ¼Ò¸®", 1.0f);
 			}
 
 			if (_currentFrameX > _Upperbody->getMaxFrameX())

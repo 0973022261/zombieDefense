@@ -12,6 +12,7 @@
 #include "clark.h"
 #include "leona.h"
 #include "Sunflower.h"
+#include "GrandFDefender.h"
 
 #include <vector>
 

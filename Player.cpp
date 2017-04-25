@@ -68,7 +68,9 @@ void Player::update()
 		
 		if (_die == false)
 		{
-			
+
+		//	fire();
+
 			if (_fire == true)       //외부에서 _fire가 true 로 만들때만 활성화
 			{
 				fire();

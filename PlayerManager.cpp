@@ -53,14 +53,50 @@ HRESULT PlayerManager::init()
 
 	IMAGEMANAGER->addFrameImage("할아버지돈", "할아버지돈.bmp", 100 * 11, 80, 11, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("할아버지도주", "할아버지도주.bmp", 100 * 8, 80, 8, 1, true, RGB(255, 0, 255));
-
-
+	IMAGEMANAGER->addFrameImage("할아버지풀림", "할아버지풀림.bmp", 80 * 5, 80, 5, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("할아버지총알발사", "할아버지총알발사.bmp", 150 * 20, 80, 20, 1, true, RGB(255, 0, 255));
 	_selectin = false;
 
-	
-	
+	SOUNDMANAGER->addSound("권총소리", "gun.wav", true, false);
+	SOUNDMANAGER->addSound("헤비머신건소리", "gun9.wav", true, false);
 
 
+	Player* GrandFD1 = new GrandFDefender;
+	GrandFD1->init();
+	GrandFD1->Stagescenelink(_sc);
+	GrandFD1->BulletLink(_bm);
+	GrandFD1->PlayerSet(530, 170);
+	_vPlayer.push_back(GrandFD1);
+
+	Player* GrandFD2 = new GrandFDefender;
+	GrandFD2->init();
+	GrandFD2->Stagescenelink(_sc);
+	GrandFD2->BulletLink(_bm);
+	GrandFD2->PlayerSet(530, 280);
+	_vPlayer.push_back(GrandFD2);
+
+	Player* GrandFD3 = new GrandFDefender;
+	GrandFD3->init();
+	GrandFD3->Stagescenelink(_sc);
+	GrandFD3->BulletLink(_bm);
+	GrandFD3->PlayerSet(530, 390);
+	_vPlayer.push_back(GrandFD3);
+
+	Player* GrandFD4 = new GrandFDefender;
+	GrandFD4->init();
+	GrandFD4->Stagescenelink(_sc);
+	GrandFD4->BulletLink(_bm);
+	GrandFD4->PlayerSet(530, 505);
+	_vPlayer.push_back(GrandFD4);
+
+	Player* GrandFD5 = new GrandFDefender;
+	GrandFD5->init();
+	GrandFD5->Stagescenelink(_sc);
+	GrandFD5->BulletLink(_bm);
+	GrandFD5->PlayerSet(530, 620);
+	_vPlayer.push_back(GrandFD5);
+
+	
 	return S_OK;
 }
 
@@ -85,11 +121,13 @@ void PlayerManager::render()
 	TextOut(getMemDC(), 5, 220, str, strlen(str));
 
 
+
+
 }
 
 void PlayerManager::update()
 {
-	/*
+    /*	
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		if (_selectin)
@@ -105,7 +143,7 @@ void PlayerManager::update()
 		}
 		else
 		{
-			Player* player = new leona;
+			Player* player = new clark;
 			player->init();
 			player->Stagescenelink(_sc);
 			player->BulletLink(_bm);
@@ -124,6 +162,10 @@ void PlayerManager::update()
 	}
 	
 	*/
+
+	
+		
+	
 
 	for (_viPlayer = _vPlayer.begin(); _viPlayer != _vPlayer.end(); _viPlayer++)
 	{

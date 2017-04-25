@@ -129,6 +129,7 @@ void leona::fire()
 				_bm->BulletFire(_rc.right + 40, _rc.top, 12.0f, 1);
 				_bm->BulletFire(_rc.right + 40, _rc.top - 100, 12.0f, 1);
 				_bm->BulletFire(_rc.right + 40, _rc.bottom + 100, 12.0f, 1);
+				SOUNDMANAGER->play("±ÇÃÑ¼Ò¸®", 1.0f);
 			}
 
 			if (_currentFrameX > _Upperbody->getMaxFrameX())

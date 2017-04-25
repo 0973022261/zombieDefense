@@ -116,8 +116,17 @@ void clark::fire()
 	if (_playerdirection == ATTACK)
 	{
 		_framecount++;
+
+	
+
 		if (_framecount % 5 == 0)
 		{
+			if (_currentFrameX == 0)
+			{
+				SOUNDMANAGER->play("헤비머신건소리", 1.0f);
+			}
+
+
 			_currentFrameX++;
 			_framecount = 0;
 			_bm->BulletFire(_rc.right, RND->getFromIntTo(_rc.top + 5 ,_rc.bottom - 5),12.0f,2);

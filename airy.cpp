@@ -133,6 +133,7 @@ void airy::fire()
 			if (_currentFrameX == 3)
 			{
 				_bm->BulletFire(_rc.right + 35, _rc.top + 5, 12.0f, 0);
+				SOUNDMANAGER->play("±ÇÃÑ¼Ò¸®", 1.0f);
 			}
 
 			if (_currentFrameX > _Upperbody->getMaxFrameX())

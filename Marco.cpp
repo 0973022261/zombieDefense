@@ -19,6 +19,8 @@ HRESULT Marco::init(void)
 	_Lowerbody = IMAGEMANAGER->findImage("마르코몸체기본");
 
 	_Hp = 5;
+	_Type = 0;
+	
 
 	return S_OK;
 }
@@ -38,7 +40,7 @@ void Marco::render()
 											_rc.top + (_rc.bottom - _rc.top) / 2 - _Lowerbody->getHeight() / 2 - 2,
 											_alphaValue);
 		_Upperbody->alphaRender(getMemDC(), _rc.left + (_rc.right - _rc.left) / 2 - _Upperbody->getWidth() / 2 + 10,
-			_rc.top + (_rc.bottom - _rc.top) / 2 - _Upperbody->getHeight() / 2 - 30,
+			_rc.top + (_rc.bottom - _rc.top) / 2 - _Upperbody->getHeight() / 2 - 40,
 			_alphaValue);
 	}
 	else if (_playerdirection == ATTACK)
@@ -48,7 +50,7 @@ void Marco::render()
 			_rc.top + (_rc.bottom - _rc.top) / 2 - _Lowerbody->getHeight() / 2 - 2);
 
 		_Upperbody->frameRender(getMemDC(), _rc.left + (_rc.right - _rc.left) / 2 - _Upperbody->getFrameWidth() / 2 + 35,
-			_rc.top + (_rc.bottom - _rc.top) / 2 - _Upperbody->getFrameHeight() / 2 - 35,
+			_rc.top + (_rc.bottom - _rc.top) / 2 - _Upperbody->getFrameHeight() / 2 - 50,
 			_currentFrameX, _currentFrameY);
 	}
 	else if (_playerdirection == DIE)
@@ -57,7 +59,7 @@ void Marco::render()
 			, _rc.top,_diecurrentFrameX,_currentFrameY);
 	}
 
-
+	
 
 }
 
@@ -78,35 +80,35 @@ void Marco::defaultDraw(float x, float y)
 	if (_playerdirection == IDLE)
 	{
 
-		_Lowerbody->alphaRender(getMemDC(), x1 +30, y1 + 50,
+		_Lowerbody->alphaRender(getMemDC(), x1, y1 + 20,
 			_alphaValue);
-		_Upperbody->alphaRender(getMemDC(), x1 + 30,
-			y1 + 7,
+		_Upperbody->alphaRender(getMemDC(), x1  ,
+			y1 - 27,
 			_alphaValue);
 	}
 	else if (_playerdirection == ATTACK)
 	{
 
-		_Lowerbody->render(getMemDC(),x1 +30, y1 + 50);
+		_Lowerbody->render(getMemDC(),x1 , y1 + 20);
 
-		_Upperbody->frameRender(getMemDC(), x1 +27, y1 ,
+		_Upperbody->frameRender(getMemDC(), x1 -3, y1 -39,
 			_currentFrameX, _currentFrameY);
 	}
 	else if (_playerdirection == DIE)
 	{
-		_body->frameRender(getMemDC(), x1 + 10
-			, y1 - 10, _diecurrentFrameX, _currentFrameY);
+		_body->frameRender(getMemDC(), x1 - 10 
+			, y1 - 40, _diecurrentFrameX, _currentFrameY);
 	}
 	
 	//RectangleMake(getMemDC(), x1, y1, _rc.right - _rc.left, _rc.bottom - _rc.top);
-
+	
 }
 
 void Marco::update()
 {
 	Player::update();
 
-
+	
 
 
 }
@@ -122,7 +124,7 @@ void Marco::fire()
 		_Upperbody = IMAGEMANAGER->findImage("마르코기본총발사");
 		_firecount = 0;
 
-		_Hp--;          //임의로 죽는 모션을 보기위한 Hp감소
+	//	_Hp--;          //임의로 죽는 모션을 보기위한 Hp감소
 	}
 
 
@@ -130,16 +132,22 @@ void Marco::fire()
 	if (_playerdirection == ATTACK)
 	{
 		_framecount++;
-		if (_framecount % 3 == 0)
+		if (_framecount % 2 == 0)
 		{
 			_currentFrameX++;
 			_framecount = 0;
+
+			if (_currentFrameX == 3)
+			{
+				_bm->BulletFire(_rc.right + 40, _rc.top , 12.0f, 0);
+			}
 
 			if (_currentFrameX > _Upperbody->getMaxFrameX())
 			{
 				_currentFrameX = 0;
 				_playerdirection = IDLE;
 				_Upperbody = IMAGEMANAGER->findImage("마르코기본총대기");
+				_fire = false;
 			}
 
 		}
@@ -163,7 +171,7 @@ void Marco::Die()
 			_diecurrentFrameX++;
 			_diecount = 0;
 
-			if (_diecurrentFrameX > _Upperbody->getMaxFrameX())
+			if (_diecurrentFrameX > _body->getMaxFrameX())
 			{
 				_die = true;
 				

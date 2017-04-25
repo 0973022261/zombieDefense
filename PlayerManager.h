@@ -2,11 +2,23 @@
 #include "gameNode.h"
 #include "Player.h"
 #include "Marco.h"
+#include "Mine.h"
+#include "Defender.h"
 #include "stage1Scene.h"
+#include "BulletManager.h"
+#include "airy.h"
+#include "pio.h"
+#include "tama.h"
+#include "clark.h"
+#include "leona.h"
+#include "Sunflower.h"
 
 #include <vector>
 
-//백터로 플레이어와 빈카드를 위치 생성 
+
+
+
+
 
 class PlayerManager : public gameNode
 {
@@ -16,7 +28,10 @@ private:
 
 	bool _selectin;   //선택했을때 true
 
+	
+
 	stage1Scene* _sc;
+	BulletManager* _bm;
 
 public:
 	HRESULT init();
@@ -24,9 +39,16 @@ public:
 	void render();
 	void update();
 
+	void settingPlayer(int type);   //처음 선택 할때 세팅중으로 설정
+	void setPlayer(float x, float y);
+
 	void removePlayer(int arrNum);
 
+	
+
 	void stageSceneLink(stage1Scene* sc) { _sc = sc; }
+	void BulletLink(BulletManager* bm) { _bm = bm; }
+
 
 	vector<Player*> &getVPlayer() { return _vPlayer; }
 	vector<Player*>::iterator &getVIPlayer() { return _viPlayer; }

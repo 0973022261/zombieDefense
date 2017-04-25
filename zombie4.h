@@ -1,7 +1,11 @@
 #pragma once
-class zombie4
+#include "zombie.h"
+
+class zombie4 : public zombie
 {
 public:
+	void update();
+
 	zombie4();
 	~zombie4();
 };

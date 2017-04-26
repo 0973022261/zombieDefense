@@ -11,19 +11,21 @@ zombie::~zombie()
 {
 }
 
-HRESULT zombie::init(const char* imageName, float x, float y, float speed, int attackDamage, int hp)
+HRESULT zombie::init(int type,const char* imageName, float x, float y, float speed, int attackDamage, int hp)
 {
+	_zombie._type = type;
 	_zombie._zombieImage = IMAGEMANAGER->findImage(imageName);
 	_zombie._x = x;
 	_zombie._y = y;
 	_zombie._speed = speed;
-	_zombie._rc = RectMakeCenter(x, y, _zombie._zombieImage->getFrameWidth(), _zombie._zombieImage->getFrameHeight());
+	_zombie._rc = RectMakeCenter(x, y,50, 50);
 	_zombie._hp = hp;
+	_zombie._currenthp = hp;
 	_zombie._attackDamage = attackDamage;
+	_zombie._isattack = false;
 
 
-	attackTime = 0;
-	isattack = false;
+	_zombie._attackTime = 0;
 
 	return S_OK;
 }
@@ -35,8 +37,6 @@ void zombie::release()
 
 void zombie::update()
 {
-
-
 	_zombie._frameCount++;
 	if (_zombie._frameCount % 5 == 0)
 	{
@@ -44,42 +44,10 @@ void zombie::update()
 		_zombie._currentFrameX++;
 		if (_zombie._currentFrameX > _zombie._zombieImage->getMaxFrameX()) _zombie._currentFrameX = 0;
 	}
-
-	switch (_zombie._zombieState)
-	{
-		case 0://IDLE
-		{
-			if(_zombie._zombieImage != IMAGEMANAGER->findImage("zombie1_IDLE"))
-				_zombie._zombieImage = IMAGEMANAGER->findImage("zombie1_IDLE");
-		}
-		break;
-		case 1://ZOMBIE_MOVE
-		{
-			if (_zombie._zombieImage != IMAGEMANAGER->findImage("zombie1_MOVE"))
-				_zombie._zombieImage = IMAGEMANAGER->findImage("zombie1_MOVE");
-			move();
-		}
-		break;
-		case 2: // ZOMBIE_ATTACK
-		{
-			if (_zombie._zombieImage != IMAGEMANAGER->findImage("zombie1_ATTACK"))
-				_zombie._zombieImage = IMAGEMANAGER->findImage("zombie1_ATTACK");
-			attack();
-		}
-		break;
-		case 3: //ZOMBIE_DIE
-		{	
-			if (_zombie._zombieImage != IMAGEMANAGER->findImage("zombie1_IDLE"))
-				_zombie._zombieImage = IMAGEMANAGER->findImage("zombie1_IDLE");
-		}
-		break;
-	}
-
 }
 
 void zombie::render(POINT pt)
 {
-	//_zombie._zombieImage->frameRender(getMemDC(), _zombie._x, _zombie._y,_zombie._currentFrameX,_zombie._currentFrameY);
 	defaultDraw(pt.x,pt.y);
 }
 
@@ -87,48 +55,39 @@ void zombie::move()
 {
 	_zombie._x -= _zombie._speed;
 
-	_zombie._rc = RectMakeCenter(_zombie._x, _zombie._y, _zombie._zombieImage->getFrameWidth(), _zombie._zombieImage->getFrameHeight());
-
-	if (_zombie._x < WINSIZEX / 4)
-	{
-		_zombie._zombieState = ZOMBIESTATE::ZOMBIE_IDLE;
-	}
-	else if (_zombie._x <= WINSIZEX / 2 && isattack == false)
-	{
-		_zombie._zombieState = ZOMBIESTATE::ZOMBIE_ATTACK;
-	}
+	_zombie._rc = RectMakeCenter(_zombie._x, _zombie._y,50, 50);
 }
 
 void zombie::defaultDraw(float _x, float _y)
 {
-	RECT rcSour;
 	RECT rcTemp;
 	RECT rcFocus = RectMake(_x, _y, WINSIZEX, WINSIZEY);
 
 	int x, y;
 
-	/*
-	rcSour.left = rcFocus.left - ((WINSIZEX / 2) - (rcFocus.right - rcFocus.left) / 2);
-	rcSour.top = rcFocus.top - ((WINSIZEY / 2) - (rcFocus.bottom - rcFocus.top) / 2);
-	rcSour.right = rcSour.left + WINSIZEX;
-	rcSour.bottom = rcSour.top + WINSIZEY;
-	*/
+
 	if (!IntersectRect(&rcTemp, &_zombie._rc, &rcFocus)) return;
 
-	x = _zombie._rc.left - rcFocus.left;
-	y = _zombie._rc.top - rcFocus.top;
+
+	//좀비 실제 가로 길이
+	//_zombie._zombieImage->getFrameWidth();
+	//Rect 길이 100
+	
+	x = _zombie._rc.left - rcFocus.left - (_zombie._zombieImage->getFrameWidth()/2 - 25);
+	y = _zombie._rc.top - rcFocus.top - (_zombie._zombieImage->getFrameHeight()/2 - 25);
 
 	_zombie._zombieImage->frameRender(getMemDC(), x, y,_zombie._currentFrameX,_zombie._currentFrameY);
-
 }
 
 void zombie::attack()
 {
-	attackTime += TIMEMANAGER->getElapsedTime();
-	if (attackTime >= 3)
+	//////////////////////////////////////////2017-04-23-좀비 수정부분(인형민)
+
+	_zombie._attackTime += TIMEMANAGER->getElapsedTime();
+	if (_zombie._attackTime >= 3)
 	{
-		attackTime = 0;
-		isattack = true;
+		_zombie._attackTime = 0;
+		_zombie._isattack = true;
 		_zombie._zombieState = ZOMBIESTATE::ZOMBIE_MOVE;
 	}
 }

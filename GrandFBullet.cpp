@@ -14,7 +14,7 @@ GrandFBullet::~GrandFBullet()
 HRESULT GrandFBullet::init(float range, int maxbullet, int Damege)
 {
 	Bullet::init(range, maxbullet, Damege);
-
+	type = 3;
 
 	return S_OK;
 }

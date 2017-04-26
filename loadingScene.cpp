@@ -14,6 +14,9 @@ loadingScene::~loadingScene()
 
 HRESULT loadingScene::init()
 {
+
+	SOUNDMANAGER->addSound("로딩배경음", "로딩배경음.mp3", true, false);
+
 	IMAGEMANAGER->addImage("loadingBG", "bmp\\BGimage\\로딩.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("loading", "bmp\\etc\\loading.bmp", 211, 68, 1, 4, true, RGB(255, 0, 255));
 
@@ -30,6 +33,9 @@ HRESULT loadingScene::init()
 	_loadingGauge->setGauge(_currentGauge, _maxGauge);
 
 
+	SOUNDMANAGER->play("로딩배경음", 1.0f);
+
+
 	return S_OK;
 }
 
@@ -41,10 +47,10 @@ void loadingScene::release()
 void loadingScene::update()
 {
 	_count++;
-	if (_count % 10 == 0)
+	if (_count % 5 == 0)
 	{
 		IMAGEMANAGER->findImage("loading")->setFrameY(++_currentFrameY);
-		_currentGauge += 5;
+		_currentGauge += 1;
 		if (_currentFrameY > IMAGEMANAGER->findImage("loading")->getMaxFrameY())
 		{
 			_count = _currentFrameY = 0;

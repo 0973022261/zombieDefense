@@ -127,7 +127,7 @@ void PlayerManager::render()
 
 void PlayerManager::update()
 {
-    /*	
+    
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		if (_selectin)
@@ -143,7 +143,7 @@ void PlayerManager::update()
 		}
 		else
 		{
-			Player* player = new clark;
+			Player* player = new Mine;
 			player->init();
 			player->Stagescenelink(_sc);
 			player->BulletLink(_bm);
@@ -161,7 +161,7 @@ void PlayerManager::update()
 		
 	}
 	
-	*/
+	
 
 	
 		

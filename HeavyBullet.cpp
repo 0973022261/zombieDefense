@@ -8,7 +8,7 @@ HeavyBullet::~HeavyBullet(){}
 HRESULT HeavyBullet::init(float range, int maxbullet, int Damege)
 {
 	Bullet::init(range,maxbullet,Damege);
-
+	type = 2;
 	return S_OK;
 }
 

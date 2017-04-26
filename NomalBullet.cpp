@@ -8,7 +8,7 @@ NomalBullet::~NomalBullet(){}
 HRESULT NomalBullet::init(float range, int maxbullet, int Damege)
 {
 	Bullet::init(range, maxbullet, Damege);
-
+	type = 0;
 	return S_OK;
 }
 

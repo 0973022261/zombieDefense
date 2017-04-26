@@ -14,6 +14,10 @@ mainScene::~mainScene()
 
 HRESULT mainScene::init()
 {
+	SOUNDMANAGER->stop("로딩배경음");
+	SOUNDMANAGER->addSound("메인화면음", "메인화면음.mp3", true, true);
+	SOUNDMANAGER->play("메인화면음");
+	SOUNDMANAGER->addSound("버튼클릭음", "버튼클릭음.mp3", false, false);
 	IMAGEMANAGER->addImage("mainBG", "bmp\\BGimage\\인트로.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("cloudBG", "bmp\\BGimage\\구름.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("blackBG", "bmp\\BGimage\\검은화면.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
@@ -101,6 +105,8 @@ void mainScene::mouse_up()
 
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
+			SOUNDMANAGER->play("버튼클릭음");
+
 			IMAGEMANAGER->findImage("startBt")->setFrameY(2);
 		}
 

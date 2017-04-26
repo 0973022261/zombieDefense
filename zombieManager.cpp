@@ -71,29 +71,29 @@ void zombieManager::update()
 		{
 			case 0:
 			{
-				makeZombie(WINSIZEX * 3, 180, RND->getInt(5));
+				makeZombie(WINSIZEX * 3, 160, RND->getInt(5));
 			}
 			break;
 			case 1:
 			{
-				makeZombie(WINSIZEX * 3, 280, RND->getInt(5));
+				makeZombie(WINSIZEX * 3, 275, RND->getInt(5));
 			}
 			break;
 
 			case 2:
 			{
-				makeZombie(WINSIZEX * 3, 400, RND->getInt(5));
+				makeZombie(WINSIZEX * 3, 390, RND->getInt(5));
 			}
 			break;
 
 			case 3:
 			{
-				makeZombie(WINSIZEX * 3, 500, RND->getInt(5));
+				makeZombie(WINSIZEX * 3, 510, RND->getInt(5));
 			}
 			break;
 			case 4:
 			{
-				makeZombie(WINSIZEX * 3, 600, RND->getInt(5));
+				makeZombie(WINSIZEX * 3, 620, RND->getInt(5));
 			}
 			break;
 
@@ -118,40 +118,44 @@ void zombieManager::makeZombie(float x, float y, int type)
 		//기본좀비
 		case 0:
 		{
+			//뚱땡이 좀비 특징 체력이 높고 대신 느리다 공격은 쎄다
 			_zombie = new zombie1;
-			_zombie->init(type, "zombie1_MOVE", x, y, 2.0f, 10.0f, 100);
+			_zombie->init(type, "zombie1_MOVE", x, y, 0.5f, 3.0f, 15);
 			_vZombie.push_back(_zombie);
 		}
 		break;
 		//기본좀비
 		case 1:
 		{
+			//박자 좀비 특징 체력은 늦고 빠르다 공격도 쎄다
 			_zombie = new zombie2;
-			_zombie->init(type, "zombie2_MOVE", x, y, 2.0f, 10.0f, 100);
+			_zombie->init(type, "zombie2_MOVE", x, y, 1.0f, 3.0f, 10);
 			_vZombie.push_back(_zombie);
 		}
 		break;
 		//기본좀비
 		case 2:
 		{
+			//토하는 좀비 데미지 쎄고 체력 보통 공격 보통
 			_zombie = new zombie3;
-			_zombie->init(type, "zombie3_MOVE", x, y, 2.0f, 10.0f, 100);
+			_zombie->init(type, "zombie3_MOVE", x, y, 1.0f, 2.0f, 12);
 			_vZombie.push_back(_zombie);
 		}
 		break;
-
 		case 3:
 		{
+			//인간형 좀비 데미지 쎼고 체력도 쎄고 공격도 쎔
 			_zombie = new zombie4;
-			_zombie->init(type, "zombie4_MOVE", x, y, 2.0f, 10.0f, 100);
+			_zombie->init(type, "zombie4_MOVE", x, y, 1.0f, 5.0f, 20);
 			_vZombie.push_back(_zombie);
 		}
 		break;
 
 		case 4:
 		{
+			//좀비
 			_zombie = new zombie5;
-			_zombie->init(type, "zombie5_MOVE", x, y, 2.0f, 10.0f, 100);
+			_zombie->init(type, "zombie5_MOVE", x, y, 0.5f, 10.0f,50);
 			_vZombie.push_back(_zombie);
 		}
 		break;

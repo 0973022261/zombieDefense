@@ -78,16 +78,12 @@ void Mine::fire()
 {
 	Player::fire();
 
-	_firecount++;
-	if (_firecount % 100 == 0)
-	{
-		_playerdirection = ATTACK;
-		_body = IMAGEMANAGER->findImage("마인파괴");
-		_firecount = 0;
+	
+	_playerdirection = ATTACK;
+	_body = IMAGEMANAGER->findImage("마인파괴");
+		
 
-	//	_Hp--;          //임의로 죽는 모션을 보기위한 Hp감소
-	}
-
+	
 
 
 	if (_playerdirection == ATTACK)
@@ -100,6 +96,7 @@ void Mine::fire()
 
 			if (_currentFrameX > _body->getMaxFrameX())
 			{
+				//_currentFrameX = _body->getMaxFrameX();
 				_die = true;
 			}
 

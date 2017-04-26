@@ -2,8 +2,11 @@
 #include "gameNode.h"
 #include "zombie.h"
 #include "zombie1.h"
+#include "zombie2.h"
+#include "zombie3.h"
+#include "zombie4.h"
+#include "zombie5.h"
 #include "stage1Scene.h"
-
 
 /*
 	2017-04-20 (목요일) 좀비매니저 작업 시작.
@@ -32,7 +35,7 @@ public:
 
 	void makeZombie(float x, float y, int type);						//좀비를 만드는 함수
 	void removeZombie(int num);											//좀비를 지우는 함수
-	
+	void ZORDER();														//좀비들을 알맞게 그려주는 함수
 
 	void stageSceneLink(stage1Scene* sc) { _sc = sc; }
 

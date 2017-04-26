@@ -8,6 +8,7 @@ SlowBullet::~SlowBullet(){}
 HRESULT SlowBullet::init(float range, int maxbullet, int Damege)
 {
 	Bullet::init(range,maxbullet, Damege);
+	type = 1;
 	return S_OK;
 }
 

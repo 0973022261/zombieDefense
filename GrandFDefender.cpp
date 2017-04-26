@@ -141,7 +141,6 @@ void GrandFDefender::fire()
 				_playerdirection = DIE;
 				_body = IMAGEMANAGER->findImage("할아버지도주");
 				_currentFrameX = 0;
-				_fire = false;
 			}
 
 		}
@@ -153,12 +152,12 @@ void GrandFDefender::fire()
 		_diecount++;
 		if (_diecount % 2 == 0)
 		{
-			_diecurrentFrameX--;
+			_diecurrentFrameX++;
 			_diecount = 0;
 
 			_x -= 5;
 			_rc = RectMakeCenter(_x, _y, 50, 50);
-			if (_diecurrentFrameX < _body->getMaxFrameX())
+			if (_diecurrentFrameX > _body->getMaxFrameX())
 			{
 				_fire = false;
 				_die = true;

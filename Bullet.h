@@ -22,7 +22,7 @@ class Bullet : public gameNode
 {
 protected:
 	tagBullet _Bullet;
-
+	int type;
 	int _Damege;
 	float _range;
 	int _maxbullet;
@@ -41,7 +41,8 @@ public:
 	int getDamege() { return _Damege; }
 
 	tagBullet& getBullet() { return _Bullet; }
-
+	void setBulletEnd(bool end) { _Bullet.end = end; }
+	int getBulletType() { return type; }
 	Bullet();
 	~Bullet();
 };

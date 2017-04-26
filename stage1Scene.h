@@ -1,7 +1,8 @@
 #pragma once
 #include "gameNode.h"
-
-class zombieManager;
+#include "playerlist.h"
+#include "selectlist.h"
+#include "UiManager.h"
 
 class stage1Scene : public gameNode
 {
@@ -13,8 +14,14 @@ private:
 	RECT _rcMap;
 	RECT _rcMouse;
 
+	
+	playerlist* _uiplayList; 
+	selectlist* _uiselectList;		
+	UiManager* _um;
+
 	bool _isStart;
-	zombieManager* _zm;
+	bool _startCheck;
+	bool _gamestart;
 public:
 
 	virtual HRESULT init();
@@ -22,9 +29,16 @@ public:
 	virtual void update();
 	virtual void render();
 
+	//void SettingType();
+
+	// 링크함수
+	void UiPlayerListLink(playerlist* ui) { _uiplayList = ui; }
+	void UiSelectListLink(selectlist* ui) { _uiselectList = ui; }
+	void UiManagerLink(UiManager* um) { _um = um; }
+	
+
 	POINT getPtMap() const { return _ptMap; }
 
-	void setLink(zombieManager* zm) { _zm = zm; }
 	stage1Scene();
 	~stage1Scene();
 };

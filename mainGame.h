@@ -5,6 +5,7 @@
 #include "loadingScene.h"
 #include "stage1Scene.h"
 #include "mainScene.h"
+#include "gameoverScene.h"
 
 //////////////////2017-04-23 콜리즌매니저 추가 (인형민)
 #include "collisionManager.h"
@@ -20,7 +21,7 @@ private:
 
 	//////////////////2017-04-23 콜리즌매니저 추가 (인형민)
 	collisionManager* _cm;
-	uiManager* _um;
+	UiManager* _um;
 	BulletManager* _bm;
 
 	stage1Scene* _sc;

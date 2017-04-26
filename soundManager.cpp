@@ -176,3 +176,16 @@ bool soundManager::isPauseSound(string keyName)
 
 	return isPause;
 }
+
+void soundManager::setBgmVolume(float volume)
+{
+	arrSoundsIter iter = _mTotalSounds.begin();
+
+	int count = 0;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		_channel[count]->setVolume(volume);
+	}
+
+}

@@ -14,18 +14,19 @@ mainScene::~mainScene()
 
 HRESULT mainScene::init()
 {
-	SOUNDMANAGER->stop("로딩배경음");
-	SOUNDMANAGER->addSound("메인화면음", "메인화면음.mp3", true, true);
-	SOUNDMANAGER->play("메인화면음");
-	SOUNDMANAGER->addSound("버튼클릭음", "버튼클릭음.mp3", false, false);
 	IMAGEMANAGER->addImage("mainBG", "bmp\\BGimage\\인트로.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("cloudBG", "bmp\\BGimage\\구름.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("blackBG", "bmp\\BGimage\\검은화면.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("optionWindow", "bmp\\etc\\optionWindow.bmp", 275*2, 174*2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("volumeBt1", "bmp\\etc\\volumeBt.bmp", 14*2, 17*2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("volumeBt2", "bmp\\etc\\volumeBt.bmp", 14 * 2, 17 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("introduce", "bmp\\etc\\helpWindow.bmp", WINSIZEX,WINSIZEY, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("startBt", "bmp\\etc\\startBt.bmp", 358, 461, 1, 3, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("optionBt", "bmp\\etc\\optionBt.bmp", 98, 64, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("helpBt", "bmp\\etc\\helpBt.bmp", 55, 50, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("quitBt", "bmp\\etc\\quitBt.bmp", 55, 60, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("OkBt", "bmp\\etc\\OkBt.bmp", 133*2, 38*2, 1, 2, true, RGB(255, 0, 255));
 
 
 	IMAGEMANAGER->findImage("startBt")->setFrameY(0);
@@ -48,11 +49,40 @@ HRESULT mainScene::init()
 	IMAGEMANAGER->findImage("quitBt")->setY(590);
 	_quitBtRc = RectMake(IMAGEMANAGER->findImage("quitBt")->getX(), IMAGEMANAGER->findImage("quitBt")->getY(), IMAGEMANAGER->findImage("quitBt")->getFrameWidth(), IMAGEMANAGER->findImage("quitBt")->getFrameHeight());
 
+	IMAGEMANAGER->findImage("optionWindow")->setX(WINSIZEX / 2 - IMAGEMANAGER->findImage("optionWindow")->getWidth() / 2);
+	IMAGEMANAGER->findImage("optionWindow")->setY(WINSIZEY / 2 - IMAGEMANAGER->findImage("optionWindow")->getHeight() / 2);
+
+	IMAGEMANAGER->findImage("OkBt")->setFrameY(0);
+	IMAGEMANAGER->findImage("OkBt")->setX(IMAGEMANAGER->findImage("optionWindow")->getX() + IMAGEMANAGER->findImage("optionWindow")->getWidth() / 2 - IMAGEMANAGER->findImage("OkBt")->getFrameWidth()/2);
+	IMAGEMANAGER->findImage("OkBt")->setY(IMAGEMANAGER->findImage("optionWindow")->getY() + IMAGEMANAGER->findImage("optionWindow")->getHeight() - IMAGEMANAGER->findImage("OkBt")->getFrameHeight() - 15);
+	_okBtRc = RectMake(IMAGEMANAGER->findImage("OkBt")->getX(), IMAGEMANAGER->findImage("OkBt")->getY(), IMAGEMANAGER->findImage("OkBt")->getFrameWidth(), IMAGEMANAGER->findImage("OkBt")->getFrameHeight());
+	
+	// 볼륨
+	_cBgmVolume = 0.5f;
+
+	_volume1SizeRc = RectMake(IMAGEMANAGER->findImage("optionWindow")->getX() + 250, IMAGEMANAGER->findImage("optionWindow")->getY() + 110, 250, 30);
+	_volume2SizeRc = RectMake(IMAGEMANAGER->findImage("optionWindow")->getX() + 250, IMAGEMANAGER->findImage("optionWindow")->getY() + 150, 250, 30);
+	
+	IMAGEMANAGER->findImage("volumeBt1")->setX(_volume1SizeRc.left + 120);
+	IMAGEMANAGER->findImage("volumeBt1")->setY(_volume1SizeRc.top);
+	_volumeBt1Rc = RectMake(IMAGEMANAGER->findImage("volumeBt1")->getX(), IMAGEMANAGER->findImage("volumeBt1")->getY(), IMAGEMANAGER->findImage("volumeBt1")->getWidth(), IMAGEMANAGER->findImage("volumeBt1")->getHeight());
+
+	IMAGEMANAGER->findImage("volumeBt2")->setX(_volume2SizeRc.left + 120);
+	IMAGEMANAGER->findImage("volumeBt2")->setY(_volume2SizeRc.top);
+	_volumeBt2Rc = RectMake(IMAGEMANAGER->findImage("volumeBt2")->getX(), IMAGEMANAGER->findImage("volumeBt2")->getY(), IMAGEMANAGER->findImage("volumeBt2")->getWidth(), IMAGEMANAGER->findImage("volumeBt2")->getHeight());
+
+	SOUNDMANAGER->addSound("mainBGM", "메인화면음.mp3", true, true);
+	SOUNDMANAGER->play("mainBGM", _cBgmVolume);
+	SOUNDMANAGER->addSound("버튼클릭음", "버튼클릭음.mp3", false, false);
+
 	_cloudX = 0;
 
 	_alpha = 240;
 
 	_isStart = false;
+	_isOptionCk = false;
+	_isHelpCk = false;
+	_isQuitCk = false;
 
 	return S_OK;
 }
@@ -67,18 +97,36 @@ void mainScene::update()
 	_cloudX++;
 
 	// 페이드 인 효과
-	if (_alpha > 0)	_alpha--;
+	if (_alpha > 0)	_alpha -= 2;
 
 	// 버튼에 마우스 입력 처리
 	mouse_up();
 
+	_cBgmVolume = float(IMAGEMANAGER->findImage("volumeBt1")->getX() - _volume1SizeRc.left) / 250;
+	SOUNDMANAGER->setBgmVolume(_cBgmVolume);
+
 	// 페이드 아웃 효과
-	if (_isStart)	_alpha += 3;
-	if (_alpha > 250)
+	if (_isStart)
 	{
-		_isStart = false;
-		SCENEMANAGER->changeScene("stage1");
+		_alpha += 5;
+		if (_alpha > 250)
+		{
+			_isStart = false;
+			SOUNDMANAGER->stop("mainBGM");
+			SCENEMANAGER->changeScene("stage1");
+		}
 	}
+
+	if (_isQuitCk)
+	{
+		_alpha += 5;
+		if (_alpha > 250)
+		{
+			DestroyWindow(_hWnd);
+		}
+	}
+
+
 }
 
 void mainScene::render()
@@ -91,71 +139,190 @@ void mainScene::render()
 	IMAGEMANAGER->findImage("helpBt")->frameRender(getMemDC(), _helpBtRc.left, _helpBtRc.top);
 	IMAGEMANAGER->findImage("quitBt")->frameRender(getMemDC(), _quitBtRc.left, _quitBtRc.top);
 
+	if (_isHelpCk)
+	{
+		IMAGEMANAGER->findImage("introduce")->render(getMemDC());
+		IMAGEMANAGER->findImage("OkBt")->frameRender(getMemDC(), WINSIZEX / 2 - 140, WINSIZEY - 50);
+	}
+
+	if (_isOptionCk)
+	{
+		IMAGEMANAGER->findImage("optionWindow")->render(getMemDC());
+		//Rectangle(getMemDC(), _volume1SizeRc.left, _volume1SizeRc.top, _volume1SizeRc.right, _volume1SizeRc.bottom);
+		//Rectangle(getMemDC(), _volume2SizeRc.left, _volume2SizeRc.top, _volume2SizeRc.right, _volume2SizeRc.bottom);
+		IMAGEMANAGER->findImage("volumeBt1")->render(getMemDC());
+		IMAGEMANAGER->findImage("volumeBt2")->render(getMemDC());
+		IMAGEMANAGER->findImage("OkBt")->frameRender(getMemDC(), _okBtRc.left, _okBtRc.top);
+	}
+
 	IMAGEMANAGER->findImage("blackBG")->alphaRender(getMemDC(), _alpha);
 }
 
 
 void mainScene::mouse_up()
 {
-	// 스타트 버튼
-	if (_ptMouse.x > _startBtRc.left && _ptMouse.x < _startBtRc.right
-		&& _ptMouse.y > _startBtRc.top && _ptMouse.y < _startBtRc.bottom)
+	if (!_isOptionCk || !_isHelpCk)
 	{
-		IMAGEMANAGER->findImage("startBt")->setFrameY(1);
-
-		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+		// 스타트 버튼
+		if (PtInRect(&_startBtRc, _ptMouse))
 		{
-			SOUNDMANAGER->play("버튼클릭음");
+			IMAGEMANAGER->findImage("startBt")->setFrameY(1);
 
-			IMAGEMANAGER->findImage("startBt")->setFrameY(2);
+			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+			{
+				IMAGEMANAGER->findImage("startBt")->setFrameY(2);
+			}
+
+			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				_isStart = true;
+			}
+		}
+		else
+		{
+			IMAGEMANAGER->findImage("startBt")->setFrameY(0);
 		}
 
-		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+
+		// 옵션 버튼
+		if (PtInRect(&_optionBtRc, _ptMouse))
 		{
-			_isStart = true;
+			IMAGEMANAGER->findImage("optionBt")->setFrameY(1);
+
+			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				_isOptionCk = true;
+			}
+		}
+		else
+		{
+			IMAGEMANAGER->findImage("optionBt")->setFrameY(0);
+		}
+
+		// 헬프 버튼
+		if (PtInRect(&_helpBtRc, _ptMouse))
+		{
+			IMAGEMANAGER->findImage("helpBt")->setFrameY(1);
+			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				_isHelpCk = true;
+			}
+		}
+		else
+		{
+			IMAGEMANAGER->findImage("helpBt")->setFrameY(0);
+		}
+
+		
+		// 종료 버튼
+		if (PtInRect(&_quitBtRc, _ptMouse))
+		{
+			IMAGEMANAGER->findImage("quitBt")->setFrameY(1);
+
+			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				_isQuitCk = true;
+			}
+		}
+		else
+		{
+			IMAGEMANAGER->findImage("quitBt")->setFrameY(0);
+		}
+
+	}
+	// 옵션 OK 버튼
+
+	if (_isOptionCk)
+	{
+		if (PtInRect(&_okBtRc, _ptMouse))
+		{
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				IMAGEMANAGER->findImage("OkBt")->setFrameY(1);
+			}
+			else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				IMAGEMANAGER->findImage("OkBt")->setFrameY(0);
+				_isOptionCk = false;
+
+			}
+		}
+		else
+		{
+			IMAGEMANAGER->findImage("OkBt")->setFrameY(0);
+		}
+
+		// 볼륨버튼1
+		if (PtInRect(&_volume1SizeRc, _ptMouse))
+		{
+			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+			{
+				IMAGEMANAGER->findImage("volumeBt1")->setX(_ptMouse.x);
+			}
+		}
+
+		// 볼륨버튼2
+		if (PtInRect(&_volume2SizeRc, _ptMouse))
+		{
+			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+			{
+				IMAGEMANAGER->findImage("volumeBt2")->setX(_ptMouse.x);
+			}
 		}
 	}
-	else
-	{
-		IMAGEMANAGER->findImage("startBt")->setFrameY(0);
-	}
 
+	if (_isHelpCk)
+	{
+		/*
 
-	// 옵션 버튼
-	if (_ptMouse.x > _optionBtRc.left && _ptMouse.x < _optionBtRc.right
-		&& _ptMouse.y > _optionBtRc.top && _ptMouse.y < _optionBtRc.bottom)
-	{
-		IMAGEMANAGER->findImage("optionBt")->setFrameY(1);
-	}
-	else
-	{
-		IMAGEMANAGER->findImage("optionBt")->setFrameY(0);
-	}
-
-	// 헬프 버튼
-	if (_ptMouse.x > _helpBtRc.left && _ptMouse.x < _helpBtRc.right
-		&& _ptMouse.y > _helpBtRc.top && _ptMouse.y < _helpBtRc.bottom)
-	{
-		IMAGEMANAGER->findImage("helpBt")->setFrameY(1);
-	}
-	else
-	{
-		IMAGEMANAGER->findImage("helpBt")->setFrameY(0);
-	}
-
-	// 종료 버튼
-	if (_ptMouse.x > _quitBtRc.left && _ptMouse.x < _quitBtRc.right
-		&& _ptMouse.y > _quitBtRc.top && _ptMouse.y < _quitBtRc.bottom)
-	{
-		IMAGEMANAGER->findImage("quitBt")->setFrameY(1);
-
-		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+		//동훈이 사진 위에 마우스 올리면 이미지 출력
+		if (PtInRect(&RectMake(100, 100, 200, 200), _ptMouse))
 		{
-			DestroyWindow(_hWnd);
+			//동훈이 사진 출력
+			//IMAGEMANAGER->findImage("동훈Intro")->render(getMemDC(), _ptMouse.x, _ptMouse.y);
 		}
-	}
-	else
-	{
-		IMAGEMANAGER->findImage("quitBt")->setFrameY(0);
+		if (PtInRect(&RectMake(100, 100, 200, 200), _ptMouse))
+		{
+			//종훈이 사진 출력
+			//IMAGEMANAGER->findImage("동훈Intro")->render(getMemDC(), _ptMouse.x, _ptMouse.y);
+		}
+		if (PtInRect(&RectMake(100, 100, 200, 200), _ptMouse))
+		{
+			//우호이 사진 출력
+			//IMAGEMANAGER->findImage("동훈Intro")->render(getMemDC(), _ptMouse.x, _ptMouse.y);
+		}
+		if (PtInRect(&RectMake(100, 100, 200, 200), _ptMouse))
+		{
+			//성진이 사진 출력
+			//IMAGEMANAGER->findImage("동훈Intro")->render(getMemDC(), _ptMouse.x, _ptMouse.y);
+		}
+		if (PtInRect(&RectMake(100, 100, 200, 200), _ptMouse))
+		{
+			//원진이 사진 출력
+			//IMAGEMANAGER->findImage("동훈Intro")->render(getMemDC(), _ptMouse.x, _ptMouse.y);
+		}
+		if (PtInRect(&RectMake(100, 100, 200, 200), _ptMouse))
+		{
+			//성환이 사진 출력
+			//IMAGEMANAGER->findImage("동훈Intro")->render(getMemDC(), _ptMouse.x, _ptMouse.y);
+		}
+		if (PtInRect(&RectMake(100, 100, 200, 200), _ptMouse))
+		{
+			//형민이 사진 출력
+			//IMAGEMANAGER->findImage("동훈Intro")->render(getMemDC(), _ptMouse.x, _ptMouse.y);
+		}
+		*/
+		if (PtInRect(&RectMake(WINSIZEX / 2 - 140, WINSIZEY - 50, IMAGEMANAGER->findImage("OkBt")->getFrameWidth(), IMAGEMANAGER->findImage("OkBt")->getFrameHeight()), _ptMouse))
+		{
+			if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+			{
+				IMAGEMANAGER->findImage("OkBt")->setFrameY(1);
+			}
+			else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				IMAGEMANAGER->findImage("OkBt")->setFrameY(0);
+				_isHelpCk = false;
+			}
+		}
 	}
 }

@@ -24,19 +24,16 @@ HRESULT mainGame::init(void)
 	loadingScene* _lc = reinterpret_cast<loadingScene*>(SCENEMANAGER->addLoadingScene("로딩", new loadingScene));
 	mainScene* _mc = reinterpret_cast<mainScene*>(SCENEMANAGER->addScene("메인화면", new mainScene));
 	_sc = reinterpret_cast<stage1Scene*>(SCENEMANAGER->addScene("stage1", new stage1Scene));
-
+	SCENEMANAGER->addScene("게임오버", new gameoverScene);
 
 	//2017-04-25 수정부분
 	EFFECTMANAGER->setSCLink(_sc);
-
-
-
 
 	_zm = new zombieManager;
 	_zm->init();
 
 
-	_um = new uiManager;
+	_um = new UiManager;
 	_um->init();
 
 	//////////////////2017-04-23 콜리즌매니저 추가 (인형민)
